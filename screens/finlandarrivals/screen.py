@@ -79,7 +79,7 @@ class FinlandArrivalsStop(Screen):
         Clock.schedule_once(self.get_buses, 0.5)
 
         # and schedule updates every 30 seconds.
-        self.timer = Clock.schedule_interval(self.get_buses, 30)
+        self.timer = Clock.schedule_interval(self.get_buses, 3)
         # We only need to update the clock every second.
         self.stimer = Clock.schedule_interval(self.update, 1)
 
@@ -121,13 +121,18 @@ class FinlandArrivalsStop(Screen):
             # Clear the previous filter
             self.ids.bx_filter.clear_widgets()
 
-            # Get the list of unique bus routes and apply a natural sort.
-            routes = sorted(set([x["route"] for x in self.buses]),
-                            key=natural_sort_key)
+        # Get the list of unique bus routes and apply a natural sort.
+        routes = sorted(set([x["route"] for x in self.buses]),
+                        key=natural_sort_key)
 
-            # Create a toggle button for each route and set it as enabled
-            # for now.
-            for route in routes:
+        # Create a toggle button for each route and set it as enabled
+        # for now.
+        for route in routes:
+            route_found=False
+            for child in self.ids.bx_filter.children:
+                if (route == child.text):
+                    route_found = True
+            if (route_found == False):
                 tb = ToggleButton(text=route, state="down")
                 tb.bind(state=self.toggled)
                 self.ids.bx_filter.add_widget(tb)
