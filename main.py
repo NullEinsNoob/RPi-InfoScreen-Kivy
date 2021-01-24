@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import os
+os.environ['KIVY_GL_BACKEND'] = 'gl'
+
 import sys
 import json
 
@@ -24,7 +26,7 @@ from core.infoscreen import InfoScreen
 # Set the current working directory
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
-VERSION = "0.4.1"
+VERSION = "2.1.0"
 
 
 class InfoScreenApp(App):
@@ -66,7 +68,9 @@ if __name__ == "__main__":
 
         # I don't like doing it this way (all imports should be at the top)
         # but I'm feeling lazy
+        print("vor import webserver")
         from core.webinterface import start_web_server
+        print("nach import webserver")
         web_enabled = True
 
     except ImportError:

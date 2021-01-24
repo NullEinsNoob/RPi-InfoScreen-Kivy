@@ -2,6 +2,9 @@ import os
 import sys
 import requests
 import time
+from datetime import date
+from datetime import datetime
+os.environ['KIVY_GL_BACKEND'] = 'gl'
 
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
@@ -22,20 +25,32 @@ class WeatherForecastHourly(BoxLayout):
         self.buildText(kwargs["summary"])
 
     def buildText(self, summary):
+        wochen = {
+            "Monday": "Montag",
+            "Tuesday": "Dienstag",
+            "Wednesday": "Mittwoch",
+            "Thursday": "Donnerstag",
+            "Friday": "Freitag",
+            "Saturday": "Samstag",
+            "Sunday": "Sonntag"
+        }
         fc = {}
-        tm = summary["FCTTIME"]
-        fc["dy"] = "{} {}{}".format(tm["weekday_name_abbrev"],
-                                    tm["hour"],
-                                    tm["ampm"].lower())
-        fc["su"] = summary["condition"]
-        fc["hg"] = summary["temp"]["metric"]
-        fc["po"] = summary["pop"]
-        self.weather = ("{dy}\n{su}\nHigh: "
-                        "{hg}{dg}\nRain: {po}%").format(dg="C", **fc)
+
+        date = summary["dt_txt"]
+        day = wochen.get(datetime.fromtimestamp(summary['dt']).strftime('%A'))
+        hour = datetime.fromtimestamp(summary['dt']).strftime('%H')
+
+        fc["dy"] = "{} {}".format(day, hour)
+        fc["su"] = summary["weather"][0]["description"]
+        fc["hg"] = summary['main']['temp_max']
+        fc["po"] = summary["clouds"]["all"]
+        self.weather = ("{dy}\n{su}\nmax: "
+                        "{hg}{dg}\nRegen: {po}%").format(dg="C", **fc)
 
 
 class WeatherForecastDay(BoxLayout):
     """Custom widget to show daily forecast summary."""
+
     weather = StringProperty("")
     icon_url = StringProperty("")
     day = StringProperty("")
@@ -45,15 +60,37 @@ class WeatherForecastDay(BoxLayout):
         self.buildText(kwargs["summary"])
 
     def buildText(self, summary):
+        wochen = {
+            "Monday": "Montag",
+            "Tuesday": "Dienstag",
+            "Wednesday": "Mittwoch",
+            "Thursday": "Donnerstag",
+            "Friday": "Freitag",
+            "Saturday": "Samstag",
+            "Sunday": "Sonntag"
+        }
         fc = {}
-        self.day = summary["date"]["weekday_short"]
-        fc["su"] = summary["conditions"]
-        fc["hg"] = summary["high"]["celsius"]
-        fc["lw"] = summary["low"]["celsius"]
-        fc["po"] = summary["pop"]
-        self.icon_url = summary["icon_url"]
-        self.weather = ("{su}\nHigh: {hg}{dg}\n"
-                        "Low: {lw}\nRain: {po}%").format(dg="C", **fc)
+        cond = ''
+        icnurl = ''
+        self.day = wochen.get(datetime.fromtimestamp(summary.get('dt')).strftime('%A'))
+        weather = summary['weather']
+        for item in weather:
+            cond = str(item['main'])
+            icon = item['icon']
+            icnurl = "http://openweathermap.org/img/w/" + str(icon)
+
+        fc["su"] = cond
+        main = summary['main']
+        temp_min = str(main['temp_min'])
+        temp_max = str(main['temp_max'])
+        fc["hg"] = temp_max
+        fc["lw"] = temp_min
+        self.icon_url = icnurl
+        self.weather = ("{su}\nTmax: {hg}{dg}\n"
+                        "Tmin: {lw}%").format(dg="C", **fc)
+
+        """self.weather = ("{su}\nTmax: {hg}{dg}\n"
+                        "Tmin: {lw}\nRegen: {po}%").format(dg="C", **fc)"""
 
 
 class WeatherSummary(Screen):
@@ -143,13 +180,15 @@ class WeatherSummary(Screen):
 
 
 class WeatherScreen(Screen):
-    forecast = "http://api.wunderground.com/api/{key}/forecast/q/{location}"
-    hourly = "http://api.wunderground.com/api/{key}/hourly/q/{location}"
+    # forecast = "https://api.openweathermap.org/data/2.5/forecast?id=2927916&mode=json&units=metric&APPID={key}"
+    forecast = "https://api.openweathermap.org/data/2.5/forecast?id={location}&mode=json&units=metric&APPID={key}"
+    # hourly = "https://api.openweathermap.org/data/2.5/weather?id=2927916&mode=json&units=metric&APPID={key}"
+    hourly = "https://api.openweathermap.org/data/2.5/weather?id={location}&mode=json&units=metric&APPID={key}"
 
     def __init__(self, **kwargs):
         super(WeatherScreen, self).__init__(**kwargs)
         self.key = kwargs["params"]["key"]
-        self.locations = kwargs["params"]["locations"]
+        self.location = kwargs["params"]["location"]
         self.flt = self.ids.weather_float
         self.flt.remove_widget(self.ids.weather_base_box)
         self.scrmgr = self.ids.weather_scrmgr
@@ -161,7 +200,7 @@ class WeatherScreen(Screen):
         # If the screen hasn't been displayed before then let's load up
         # the locations
         if not self.running:
-            for location in self.locations:
+            for location in self.location:
 
                 # Create the necessary URLs for the data
                 forecast, hourly = self.buildURLs(location["address"])
@@ -170,7 +209,7 @@ class WeatherScreen(Screen):
                 ws = WeatherSummary(forecast=forecast,
                                     hourly=hourly,
                                     name=location["address"],
-                                    location=location["name"])
+				    location=location["name"])
 
                 # and add to our screen manager.
                 self.scrmgr.add_widget(ws)
@@ -193,8 +232,8 @@ class WeatherScreen(Screen):
                 c.on_leave()
 
     def buildURLs(self, location):
-        return (self.forecast.format(key=self.key, location=location),
-                self.hourly.format(key=self.key, location=location))
+        return (self.forecast.format(key=self.key, location=self.location),
+                self.hourly.format(key=self.key, location=self.location))
 
     def next_screen(self, rev=True):
         a = self.myscreens

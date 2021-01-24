@@ -1,0 +1,6 @@
+{
+    "screen": "SophieCalc",
+    "kv": "calc.kv",
+    "dependencies": ["random"],
+    "enabled": false
+}

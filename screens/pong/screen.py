@@ -52,7 +52,9 @@ class PongScreen(Screen):
     pongfloat = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-        super(PongScreen, self).__init__(**kwargs)
+        #super(PongScreen, self).__init__(**kwargs)
+        super(PongScreen, self).__init__()
+        self.name="pong"
         try:
             self.winscore = int(kwargs["params"]["winningscore"])
             if self.winscore < 0:

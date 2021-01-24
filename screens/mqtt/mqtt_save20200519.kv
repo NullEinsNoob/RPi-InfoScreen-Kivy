@@ -1,0 +1,107 @@
+<Drawer>:
+	name: "mqtt"
+	BoxLayout:
+		orientation: "horizontal"
+		BoxLayout:
+			orientation: "vertical"
+			Label:
+				text: "Innen"
+				#font_size: 30
+				#size_hint_x: 1
+				id: label1
+			Label:
+				text: root.tempIn
+				#padding: 30
+				font_size: 100
+				#size_hint_x: 2
+				#id: ltempIn
+			Label:
+				text: "Aussen"
+				#font_size: 30
+				#size_hint_x: 1
+				id: label2
+			Label:
+				text: root.tempOut
+				#padding: 30
+				font_size: 100
+				#id: ltempOut
+	
+		BoxLayout:
+			orientation: "vertical"
+			Label:
+				text: ""
+			Label:
+				outline_width: 10
+				#padding_x: 10
+				#padding_y: 10
+				font_name: "screens/clock/resources/SFDigitalReadout-Medium.ttf"
+        			# text: "[size=200]{h:02d}:{m:02d}[/size][size=100] {s:02d}[/size]".format(**root.timedata)
+				text: "[size=150]{h:02d}:{m:02d}[/size][size=100] {s:02d}[/size]".format(**root.timedata)
+				#text: "Huhu"
+				markup: True
+			# Deckenfluter
+			Label:
+				text: "Deckenfluter"
+			BoxLayout:
+				orientation: "horizontal"
+				ToggleButton:
+					text: "Ein"
+					# text_height: self.height
+					# font_size: 50
+					on_press: root.floodOn()
+					#padding: 10, 10
+					group: "fluter"
+					id: btn1
+				ToggleButton:
+					text: "Aus"
+					# text_height: self.height
+					# font_size: 50
+					on_press: root.floodOff()
+					#padding: 10, 10
+					group: "fluter"
+					state: "down"
+					id: btn2
+			# Lampe 2
+			Label:
+				text: "Winterkinder"
+			BoxLayout:
+				orientation: "horizontal"
+				ToggleButton:
+					text: "Ein"
+					# text_height: self.height
+					# font_size: 50
+					on_press: root.lamp2On()
+					#padding: 10, 10
+					group: "lamp2"
+					id: btn3
+				ToggleButton:
+					text: "Aus"
+					# text_height: self.height
+					# font_size: 50
+					on_press: root.lamp2Off()
+					#padding: 10, 10
+					group: "lamp2"
+					state: "down"
+					id: btn4
+			# Lampe 3
+			Label:
+				text: "Lampe 3"
+			BoxLayout:
+				orientation: "horizontal"
+				ToggleButton:
+					text: "Ein"
+					# text_height: self.height
+					# font_size: 50
+					on_press: root.lalmp3On()
+					#padding: 10, 10
+					group: "lamp3"
+					id: btn5
+				ToggleButton:
+					text: "Aus"
+					# text_height: self.height
+					# font_size: 50
+					on_press: root.lamp3Off()
+					#padding: 10, 10
+					group: "lamp3"
+					state: "down"
+					id: btn6

@@ -8,12 +8,18 @@ from kivy.uix.screenmanager import Screen
 class ClockScreen(Screen):
     """Simple plugin screen to show digital clock of current time."""
     # String Property to hold time
-    timedata = DictProperty(None)
+    #timedata = DictProperty(None)
+    timedata = DictProperty({})
+    # {'h': 20, 'm': 29, 's': 20}
+    #timedata = {}
 
     def __init__(self, **kwargs):
         self.get_time()
-        super(ClockScreen, self).__init__(**kwargs)
+        #super(ClockScreen, self).__init__(**kwargs)
+        super(ClockScreen, self).__init__()
+        self.name = kwargs["name"]
         self.timer = None
+        
 
     def get_time(self):
         """Sets self.timedata to current time."""
@@ -21,6 +27,7 @@ class ClockScreen(Screen):
         self.timedata["h"] = n.hour
         self.timedata["m"] = n.minute
         self.timedata["s"] = n.second
+        #print(self.timedata)
 
     def update(self, dt):
         self.get_time()

@@ -12,21 +12,23 @@ import ephem
 
 class ISSScreen(Screen):
     def __init__(self, **kwargs):
-        super(ISSScreen, self).__init__(**kwargs)
+        #super(ISSScreen, self).__init__(**kwargs)
+        super(ISSScreen, self).__init__()
+        self.name = kwargs["name"]
 
         # Set the path for the folder
         self.path = os.path.dirname(os.path.abspath(__file__))
 
         # Set the path for local images
         self.imagefolder = os.path.join(self.path, "images")
-
+        
         # Ephem calculates the position using the Two Line Element data
         # We need to make sure we have up to date info
         tle = self.get_TLE()
-
+        
         # Create an iss object from which we can get positional data
         self.iss = ephem.readtle(*tle)
-
+        
         # Run the calculations
         self.iss.compute()
 
@@ -41,12 +43,15 @@ class ISSScreen(Screen):
         self.path_icon = os.path.join(self.imagefolder, "dot.png")
 
         # Create the world map
-        self.map = MapView(id="mpv",lat=0, lon=0, zoom=1, scale=1.5)
+        #self.map = MapView(id="mpv",lat=0, lon=0, zoom=1, scale=1.5)
+        self.map = MapView(lat=0, lon=0, zoom=1)
         x, y = self.map.get_window_xy_from(0,0,1)
         self.map.scale_at(1.2, x, y)
 
         # Add the ISS marker to the map and draw the map on the screen
+        print("add map")
         self.map.add_widget(self.marker)
+        print("add widget")
         self.add_widget(self.map)
 
         # Add a new layer for the path
@@ -95,14 +100,14 @@ class ISSScreen(Screen):
             self.mmlayer.reposition()
 
     def get_TLE(self):
-
+       
         # Set some flags
         need_update = False
 
         # Set our data source and the name of the object we're tracking
         source = "http://www.celestrak.com/NORAD/elements/stations.txt"
         ISS = "ISS (ZARYA)"
-
+        
         # Get the current time
         utc_now = self.utcnow()
 

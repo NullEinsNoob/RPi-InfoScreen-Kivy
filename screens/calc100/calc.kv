@@ -1,0 +1,142 @@
+<Status@Label>
+    text_size: self.size
+    font_size: 50
+    markup: True
+
+<SophieCalc>:
+    name: "CalcQuest"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Du hast gerade begonnen."
+            id: count
+        BoxLayout:
+            size_hint_y: 2
+            Status:
+                text: "0"
+                id: Zahl1
+            Status:
+                text: "+"
+                id: LabelOperand
+            Status:
+                text: "0"
+                id: Zahl2
+            Status:
+                text: "="
+            Status:
+                text: "0"
+                id: Ergebnis
+        GridLayout:
+            cols: 3
+            size_hint_y: 6
+            Button:
+                text: "1"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "2"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "3"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "4"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "5"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "6"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "7"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "8"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "9"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: ""
+                text_height: self.height
+                font_size: 50
+                # on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "0"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+            Button:
+                text: "ENTF"
+                text_height: self.height
+                font_size: 50
+                on_press: root.button_pressed(self)
+                padding: 10, 10
+        Button:
+            size_hint_y: 3
+            text: "Na, stimmt die Rechnung?"
+            on_press: root.check()
+            #on_release: root.current = CustomPopUp
+
+<CustomPopup>:
+    size_hint: .8, .8
+    auto_dismiss: False
+    title: 'Die Antwort ist:'
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            Image:
+                padding: 50, 50
+                # color: 0, 0, 1, 1
+                # width
+                # height
+                size: self.width, self.height
+                id: imgAnswer
+
+            BoxLayout:
+                size_hint_x: 4
+                orientation: "vertical"
+                Label:
+                    text: "Richtig"
+                    id: Labelcond
+                    #size: 480, 4000
+                    #color: 0, 1, 0, 1
+                Label:
+                    size_hint_y: 3
+                    #font_size: 80
+                    text: "Hallo Sophie"
+                    id: outputAnswer
+        Button:
+            text: 'OK, weiter gehts!'
+            #padding: 1000, 1000
+            #size:self.width, 100
+            on_press: root.dismiss()

@@ -14,6 +14,7 @@
 '''
 
 from threading import Thread
+
 from time import sleep
 import os
 import json
@@ -22,10 +23,11 @@ import imp
 from kivy.app import App
 
 from bottle import Bottle, template, request, TEMPLATE_PATH, redirect
+
 import requests
 
-from getplugins import getPlugins
-from webapi import InfoScreenAPI
+from core.getplugins import getPlugins
+from core.webapi import InfoScreenAPI
 
 HEADER = '''Raspberry Pi Information Screen<br />'''
 
@@ -237,9 +239,10 @@ def start_api(appdir, apiport, debug=False):
     ws.run(host="0.0.0.0", port=apiport, debug=debug)
 
 def start_web_server(appdir, webport=8088, apiport=8089, debug=False):
+    print("inside webinterface")
     # Create the webserver in a new thread
     t = Thread(target=start_web, args=(appdir, webport, apiport, debug))
-
+    print("nach t")
     # Daemonise it
     t.daemon = True
 
@@ -248,9 +251,10 @@ def start_web_server(appdir, webport=8088, apiport=8089, debug=False):
 
     # Create the API server in a new thread
     api = Thread(target=start_api, args=(appdir, apiport))
-
+    print("nach api")
     # Daemonise it
     api.daemon = True
 
     # Go!
     api.start()
+    print("nach go")

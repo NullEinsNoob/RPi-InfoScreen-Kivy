@@ -1,0 +1,6 @@
+{
+    "screen": "Drawer",
+    "kv": "mqtt.kv",
+    "dependencies": [],
+    "enabled": true
+}

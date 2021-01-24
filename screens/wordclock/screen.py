@@ -22,7 +22,8 @@ class WordClockLetter(Label):
     textcol = ListProperty([0.15, 0.15, 0.15, 1])
 
     def __init__(self, **kwargs):
-        super(WordClockLetter, self).__init__(**kwargs)
+        #super(WordClockLetter, self).__init__(**kwargs)
+        super(WordClockLetter, self).__init__()
 
         # Flag for determining whether the state of the letter has changed
         self.oldstate = False
@@ -32,6 +33,9 @@ class WordClockLetter(Label):
 
         self.off_colour = [0.15, 0.15, 0.15, 1]
         self.on_colour = kwargs["colour"]
+        self.text = kwargs["text"]
+        self.size = kwargs["size"]
+        self.font_size = kwargs["font_size"]
 
     def toggle(self, on):
         if on:
@@ -48,7 +52,9 @@ class WordClockLetter(Label):
 
 class WordClockScreen(Screen):
     def __init__(self, **kwargs):
-        super(WordClockScreen, self).__init__(**kwargs)
+        #super(WordClockScreen, self).__init__(**kwargs)
+        super(WordClockScreen, self).__init__()
+        self.name="wordclock"
         self.running = False
         self.timer = None
         self.oldtime = None
@@ -128,6 +134,7 @@ class WordClockScreen(Screen):
            then it defaults to loading the English layout.
         """
         module = os.path.join(self.layouts, "{}.py".format(self.lang))
+        print("module: ", module)
 
         try:
             config = imp.load_source("layouts.{}".format(self.lang), module)
@@ -135,7 +142,7 @@ class WordClockScreen(Screen):
         except ImportError:
             self.lang = "english"
             config = imp.load_source("layouts.{}".format(self.lang), module)
-
+        print("config", config)
         return config
 
     def setup(self):
@@ -149,6 +156,7 @@ class WordClockScreen(Screen):
         grid = GridLayout(cols=self.config.COLS)
 
         # Loop over the letters
+        print("vor loop letters")
         for ltr in self.config.LAYOUT:
 
             # Create a letter object

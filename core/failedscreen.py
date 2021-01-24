@@ -7,14 +7,20 @@ class FailedScreen(Screen):
        correctly.
     """
     def __init__(self, **kwargs):
-        super(FailedScreen, self).__init__(**kwargs)
+        #super(FailedScreen, self).__init__(**kwargs)
+        #super(FailedScreen, self).__init__()
+        self.name="FAILEDSCREENS"
 
         # Get details of the screens that have failed
         # Unmet dependencies
         self.dep = kwargs["dep"]
+    
         # Other unhandled failures
         self.failed = kwargs["failed"]
 
+        # Testaufruf
+        super(FailedScreen, self).__init__()
+      
         # Build our screen
         self.buildLabel()
 
