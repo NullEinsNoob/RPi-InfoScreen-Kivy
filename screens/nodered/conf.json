@@ -1,0 +1,6 @@
+{
+    "screen": "NodeRedScreen",
+    "kv": "NodeRed.kv",
+    "dependencies": [],
+    "enabled": false
+}

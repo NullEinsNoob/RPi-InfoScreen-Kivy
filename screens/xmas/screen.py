@@ -13,11 +13,13 @@ class XmasScreen(Screen):
     third_line = StringProperty("")
 
     def __init__(self, **kwargs):
-        super(XmasScreen, self).__init__(**kwargs)
+        #super(XmasScreen, self).__init__(**kwargs)
+        super(XmasScreen, self).__init__()
+        self.name="xmas"
         self.xmas = self.getChristmas()
-        self.first_line = "There are..."
-        self.second_line = "[calculating time...]"
-        self.third_line = "until Christmas!"
+        self.first_line = "Es sind noch ..."
+        self.second_line = "[Berechne Zeit...]"
+        self.third_line = "bis Weihnachten!"
         self.timer = None
 
     def getChristmas(self):
@@ -44,7 +46,7 @@ class XmasScreen(Screen):
             # It's Christmas
 
             self.first_line = ""
-            self.second_line = "[size=100]Happy Christmas![/size]"
+            self.second_line = "[size=100]Frohe Weihnachten![/size]"
             self.third_line = ""
 
         else:
@@ -53,9 +55,9 @@ class XmasScreen(Screen):
             h, rem = divmod(delta.seconds, 3600)
             m, _ = divmod(rem, 60)
 
-            self.first_line = "There are..."
-            self.second_line = ("[size=30][size=70]{d}[/size] days, "
-                                "[size=60]{h}[/size] hours and "
+            self.first_line = "Es sind noch ..."
+            self.second_line = ("[size=30][size=70]{d}[/size] Tage, "
+                                "[size=60]{h}[/size] Stunden und "
                                 "[size=60]{m}[/size] "
-                                "minutes[/size]").format(d=d, h=h, m=m)
-            self.third_line = "...until Christmas."
+                                "Minuten[/size]").format(d=d, h=h, m=m)
+            self.third_line = "... bis Weihnachten."

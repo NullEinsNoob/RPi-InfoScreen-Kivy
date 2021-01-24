@@ -32,7 +32,6 @@
        {"status": "error",
         "message": [Error message]}
 '''
-
 from threading import Thread
 from time import sleep
 import os
@@ -43,7 +42,7 @@ from kivy.app import App
 
 from bottle import Bottle, template, request, response
 
-from getplugins import getPlugins
+from core.getplugins import getPlugins
 
 class InfoScreenAPI(Bottle):
     def __init__(self, infoscreen, folder):

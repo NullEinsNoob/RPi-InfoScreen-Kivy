@@ -1,0 +1,6 @@
+{
+    "screen": "browserScreen",
+    "kv": "browser.kv",
+    "dependencies": [],
+    "enabled": false
+}

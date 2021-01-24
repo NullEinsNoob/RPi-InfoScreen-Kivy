@@ -12,15 +12,19 @@ from core.getplugins import getPlugins
 class InfoScreen(FloatLayout):
     # Flag for determining whether screen is locked or not
     locked = BooleanProperty(False)
-
+    print("class InfoScreen Layout")
     def __init__(self, **kwargs):
         scrmgr = ObjectProperty(None)
 
-        super(InfoScreen, self).__init__(**kwargs)
+        #super(InfoScreen, self).__init__(**kwargs)
+        
 
         # Get our list of available plugins
         plugins = kwargs["plugins"]
 
+        # Test aufruf
+        super(InfoScreen, self).__init__()
+        
         # We need a list to hold the names of the enabled screens
         self.availablescreens = []
 
@@ -72,13 +76,15 @@ class InfoScreen(FloatLayout):
                                            master=self,
                                            params=p["params"]))
                     Logger.info("Screen: {} loaded.".format(p["name"]))
+                    #print(self.scrmgr.screens)
 
                 # Uh oh, something went wrong...
-                except Exception, e:
+                except Exception as e:
                     # Add the screen name and error message to our list
                     Logger.error("Could not import "
                                  "{} screen. Skipping...".format(p["name"]))
                     failedscreens.append((p["name"], repr(e)))
+                    print("Fehler: ", e)
 
                 else:
                     # We can add the screen to our list of available screens.
@@ -88,13 +94,15 @@ class InfoScreen(FloatLayout):
         if dep_fail or failedscreens:
 
             # Create the FailedScreen instance
-            self.failscreen = FailedScreen(dep=dep_fail,
-                                           failed=failedscreens,
-                                           name="FAILEDSCREENS")
+            #print("fail loading")
+            self.failscreen = FailedScreen(name="FAILEDSCREENS",
+                                           dep=dep_fail,
+                                           failed=failedscreens)
 
             # Add it to our screen manager and make sure it's the first screen
             # the user sees.
             self.scrmgr.add_widget(self.failscreen)
+            print("failed ", self.scrmgr.screens)
             self.scrmgr.current = "FAILEDSCREENS"
 
     def toggle_lock(self, locked=None):

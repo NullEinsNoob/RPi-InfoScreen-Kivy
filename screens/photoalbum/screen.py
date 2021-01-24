@@ -35,7 +35,9 @@ class PhotoAlbumScreen(Screen):
     photoduration = BoundedNumericProperty(5, min=2, max=60, errorvalue=5)
 
     def __init__(self, **kwargs):
-        super(PhotoAlbumScreen, self).__init__(**kwargs)
+        #super(PhotoAlbumScreen, self).__init__(**kwargs)
+        super(PhotoAlbumScreen, self).__init__()
+        self.name = kwargs["name"]
 
         # Get the user's preferences
         self.folders = kwargs["params"]["folders"]
@@ -110,6 +112,23 @@ class PhotoAlbumScreen(Screen):
 
         # Get the current photo
         photo = self.photos[self.photoindex]
+        fehler = True
+        while fehler:
+            try:
+                print("Foto laden")
+                photo = self.photos[self.photoindex]
+                fehler = False
+            except:
+                print("Es gab ein Problem beim Foto laden")
+                fehler = True
+                self.photoindex = (self.photoindex + 1) % len(self.photos)
+        
+        if fehler:
+            print("Ich lad lieber mal das erste Bild")
+            photo = self.photos[0]
+        
+        print("Photo: ", photo)
+        print(type(photo))
 
         # Create a screen pbject to show that photo
         scr = Photo(name=photo)

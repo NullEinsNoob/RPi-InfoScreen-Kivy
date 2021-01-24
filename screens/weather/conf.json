@@ -4,12 +4,7 @@
     "enabled": false,
     "dependencies": ["requests"],
     "params": {
-        "key": "YOUR_API_KEY_HERE",
-        "locations": [
-            {"name": "London",
-             "address": "UK/London.json"},
-            {"name": "Current location",
-             "address": "autoip.json"}
-         ]
+        "key": "2aabe577ee483dbc0f67e1e434c8e5b1",
+        "location": "2927916"
     }
 }
