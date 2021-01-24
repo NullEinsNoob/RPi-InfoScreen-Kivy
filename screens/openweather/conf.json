@@ -4,7 +4,7 @@
     "dependencies": ["requests", "datetime"],
     "enabled": true,
     "params": {
-        "key": "2aabe577ee483dbc0f67e1e434c8e5b1",
-        "localID": "Falkenstein/Vogtland"
+        "key": "your_Key",
+        "localID": "Your_Location"
     }
 }
